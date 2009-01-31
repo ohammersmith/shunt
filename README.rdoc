@@ -1,32 +1,42 @@
 = shunt
 
-* FIX (url)
+* http://github.com/ohammersmith/shunt/tree/master
 
 == DESCRIPTION:
 
-FIX (describe your package)
+Refactor your tests under a green bar.
+
+I hate refactoring under a red bar.  I like green.  It's pavlovian.
+
+This lets you duplicate your existing test, break some code in the code under test, and refactor away.  This will generate a pending
+spec if and only if both blocks fail in exactly the same way.  Make a typo in your refactoring, but don't notice because the bar is
+still red?  Not a problem.
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Currently only does rSpec
+* Currently not very useful as it can't span scopes
 
 == SYNOPSIS:
 
-  FIX (code sample of usage)
+  Shunt.go do |shunt|
+    shunt.control { true.should be_false }  # original test code
+    shunt.variable { true.should be_false } # refactor this into something nicer
+  end
 
 == REQUIREMENTS:
 
-* FIX (list of requirements)
+* rSpec
 
 == INSTALL:
 
-* FIX (sudo gem install, anything else)
+* Gem coming later
 
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 FIXME full name
+Copyright (c) 2009 Otto Hammersmith
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
