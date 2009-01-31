@@ -38,12 +38,32 @@ describe "Shunt" do
     end
     
     it "should result in a failure if variable fails in a different way than control" do
-      pending
+      lambda do
+        
+        Shunt.go do |shunt|
+          shunt.control { true.should be_false }
+          shunt.variable { false.should be_true }
+        end
+        # TODO it should probaly give some stack traces of the originals somehow
+        
+      end.should raise_error(Spec::Expectations::ExpectationNotMetError, "The control and variable specs fail in different ways")
     end
     
     it "should result in a pending spec if variable fails in exactly the same way as control" do
-      pending
+      lambda do
+        Shunt.go do |shunt|
+          shunt.control { true.should be_false }
+          shunt.variable { true.should be_false }
+        end
+        
+      end.should raise_error(Spec::Example::ExamplePendingError, "TODO Some useful message")
+      
     end
-  end
+    
+    it "should result in a failure if variable fails with the same message as control, but a different stack trace" do
+      pending "I'm not sure this is possible, since I would have filter out parts of the stack trace that are in the spec itself, plus any other places that are allowed to change."
+    end
+
+  end  
   
 end

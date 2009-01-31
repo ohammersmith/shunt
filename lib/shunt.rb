@@ -5,6 +5,10 @@ module Shunt
   VERSION = '0.0.1'
   
   
+  def raise_an_error
+    raise "blah blah"
+  end
+
   def go(&proc)
     @shunt = Shunt.new
     yield @shunt
@@ -15,12 +19,14 @@ module Shunt
       raise Spec::Expectations::ExpectationNotMetError.new("The control spec passes, is the code under test broken?")
     elsif !@shunt.control_exception.nil? && @shunt.variable_exception.nil?
       raise Spec::Expectations::ExpectationNotMetError.new("The variable spec passes now.")
+    elsif !@shunt.control_exception.message.eql?(@shunt.variable_exception.message)
+      raise Spec::Expectations::ExpectationNotMetError.new("The control and variable specs fail in different ways") 
+    else
+      raise Spec::Example::ExamplePendingError.new("TODO Some useful message")
     end
-    # should be where they both have failures and I should test them somehow
-    # assuming I'm not delusional about how tired I am.
   end
   
-  class Shunt  # TODO should this be the self construct, WTF is that anyway?
+  class Shunt  # TODO should this be the self construct?
     
     attr_reader :control_exception
     attr_reader :variable_exception
@@ -39,6 +45,7 @@ module Shunt
         @variable_exception = e
       end      
     end
+    
     
   end
 end
