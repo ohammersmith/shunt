@@ -22,7 +22,7 @@ module Shunt
     elsif !@shunt.control_exception.message.eql?(@shunt.variable_exception.message)
       raise Spec::Expectations::ExpectationNotMetError.new("The control and variable specs fail in different ways") 
     else
-      raise Spec::Example::ExamplePendingError.new("TODO Some useful message")
+      raise Spec::Example::ExamplePendingError.new("Shunt in progress")
     end
   end
   
