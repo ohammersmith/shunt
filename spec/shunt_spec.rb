@@ -56,14 +56,17 @@ describe "Shunt" do
           shunt.variable { true.should be_false }
         end
         
-      end.should raise_error(Spec::Example::ExamplePendingError, "TODO Some useful message")
+      end.should raise_error(Spec::Example::ExamplePendingError, "Shunt in progress")
       
     end
     
-    it "should result in a failure if variable fails with the same message as control, but a different stack trace" do
+    xit "should result in a failure if variable fails with the same message as control, but a different stack trace" do
       pending "I'm not sure this is possible, since I would have filter out parts of the stack trace that are in the spec itself, plus any other places that are allowed to change."
     end
 
   end  
   
+  describe "shunt across scopes" do
+    it "should be maaagic"
+  end
 end
