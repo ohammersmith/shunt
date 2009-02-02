@@ -67,6 +67,30 @@ describe "Shunt" do
   end  
   
   describe "shunt across scopes" do
-    it "should be maaagic"
+    
+    before(:all) do
+      @shunt = Shunt::Shunt.new
+    end
+    
+    after(:all) do
+      lambda { @shunt.validate! }.should raise_error(Spec::Example::ExamplePendingError, "Shunt in progress")
+    end
+
+    it "TEST SPEC should do something nifty - original spec" do
+      @shunt.control do
+        true.should be_false
+      end
+    end
+    
+    it "TEST SPEC should do something nifty - refactoring spec" do
+      @shunt.variable do
+        true.should be_false
+      end
+    end
+
+    it "should have an actual shunt" do
+      @shunt.should_not be_nil
+    end
+    
   end
 end

@@ -12,21 +12,28 @@ module Shunt
   def go(&proc)
     @shunt = Shunt.new
     yield @shunt
-    
-    if @shunt.control_exception.nil? && @shunt.variable_exception.nil?
-      raise Spec::Expectations::ExpectationNotMetError.new("The code isn't broken, please break something.")
-    elsif @shunt.control_exception.nil? && !@shunt.variable_exception.nil?
-      raise Spec::Expectations::ExpectationNotMetError.new("The control spec passes, is the code under test broken?")
-    elsif !@shunt.control_exception.nil? && @shunt.variable_exception.nil?
-      raise Spec::Expectations::ExpectationNotMetError.new("The variable spec passes now.")
-    elsif !@shunt.control_exception.message.eql?(@shunt.variable_exception.message)
-      raise Spec::Expectations::ExpectationNotMetError.new("The control and variable specs fail in different ways") 
-    else
-      raise Spec::Example::ExamplePendingError.new("Shunt in progress")
-    end
+    @shunt.validate!
   end
   
   class Shunt  # TODO should this be the self construct?
+    
+    def initialize
+      
+    end
+    
+    def validate!
+      if control_exception.nil? && variable_exception.nil?
+        raise Spec::Expectations::ExpectationNotMetError.new("The code isn't broken, please break something.")
+      elsif control_exception.nil? && !variable_exception.nil?
+        raise Spec::Expectations::ExpectationNotMetError.new("The control spec passes, is the code under test broken?")
+      elsif !control_exception.nil? && variable_exception.nil?
+        raise Spec::Expectations::ExpectationNotMetError.new("The variable spec passes now.")
+      elsif !control_exception.message.eql?(variable_exception.message)
+        raise Spec::Expectations::ExpectationNotMetError.new("The control and variable specs fail in different ways") 
+      else
+        raise Spec::Example::ExamplePendingError.new("Shunt in progress")
+      end
+    end
     
     attr_reader :control_exception
     attr_reader :variable_exception
